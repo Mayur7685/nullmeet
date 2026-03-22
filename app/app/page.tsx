@@ -48,7 +48,7 @@ export default function Home() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setNumDays(Math.max(1, numDays - 1))}
-                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--card-hover)] rounded text-[var(--foreground)]"
+                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--accent)]/30 active:bg-[var(--accent)]/50 rounded text-[var(--foreground)] font-bold transition-colors select-none"
                     >
                       -
                     </button>
@@ -57,7 +57,7 @@ export default function Home() {
                       onClick={() =>
                         setNumDays(Math.min(MAX_DAYS, numDays + 1))
                       }
-                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--card-hover)] rounded text-[var(--foreground)]"
+                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--accent)]/30 active:bg-[var(--accent)]/50 rounded text-[var(--foreground)] font-bold transition-colors select-none"
                     >
                       +
                     </button>
@@ -73,7 +73,7 @@ export default function Home() {
                       onClick={() =>
                         setMaxParticipants(Math.max(2, maxParticipants - 1))
                       }
-                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--card-hover)] rounded text-[var(--foreground)]"
+                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--accent)]/30 active:bg-[var(--accent)]/50 rounded text-[var(--foreground)] font-bold transition-colors select-none"
                     >
                       -
                     </button>
@@ -86,7 +86,7 @@ export default function Home() {
                           Math.min(MAX_PARTICIPANTS, maxParticipants + 1)
                         )
                       }
-                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--card-hover)] rounded text-[var(--foreground)]"
+                      className="w-8 h-8 bg-[var(--border)] hover:bg-[var(--accent)]/30 active:bg-[var(--accent)]/50 rounded text-[var(--foreground)] font-bold transition-colors select-none"
                     >
                       +
                     </button>
@@ -96,7 +96,7 @@ export default function Home() {
 
               <button
                 onClick={handleStart}
-                className="w-full px-8 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] rounded-lg text-white font-medium transition-colors"
+                className="w-full px-8 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] active:scale-95 rounded-lg text-white font-medium transition-all"
               >
                 Start a Meeting
               </button>

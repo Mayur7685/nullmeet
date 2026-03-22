@@ -385,7 +385,7 @@ export default function MeetingPage() {
                 </p>
                 <button
                   onClick={handleComputeResult}
-                  className="px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] text-white font-semibold rounded-lg transition-colors"
+                  className="px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] active:scale-95 text-white font-semibold rounded-lg transition-all"
                 >
                   Calculate Best Time
                 </button>

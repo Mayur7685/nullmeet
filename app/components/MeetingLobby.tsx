@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Participant } from "@/hooks/useMeeting";
 import { ParticipantList } from "./ParticipantList";
@@ -32,8 +33,12 @@ export function MeetingLobby({
       ? `${window.location.origin}/meet/${meetingId}?join=1&days=${numDays}&max=${maxParticipants}`
       : "";
 
+  const [copied, setCopied] = useState(false);
+
   const copyLink = () => {
     navigator.clipboard.writeText(joinUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   if (!isHost) {
@@ -83,9 +88,13 @@ export function MeetingLobby({
         />
         <button
           onClick={copyLink}
-          className="px-4 py-2 bg-[var(--accent)] hover:bg-[var(--accent-light)] rounded-lg text-white text-sm transition-colors"
+          className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-all active:scale-95 min-w-[72px] ${
+            copied
+              ? "bg-[var(--success)]"
+              : "bg-[var(--accent)] hover:bg-[var(--accent-light)]"
+          }`}
         >
-          Copy
+          {copied ? "Copied!" : "Copy"}
         </button>
       </div>
 
@@ -101,7 +110,7 @@ export function MeetingLobby({
         <button
           onClick={onLock}
           disabled={participants.length < 2}
-          className="w-full px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] disabled:opacity-40 rounded-lg text-white font-medium transition-colors"
+          className="w-full px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] active:scale-95 disabled:opacity-40 disabled:active:scale-100 rounded-lg text-white font-medium transition-all"
         >
           {participants.length < 2
             ? "Waiting for participants to join..."

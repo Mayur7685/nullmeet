@@ -77,3 +77,18 @@ body {
 .wallet-adapter-modal-wrapper {
   background-color: var(--card) !important;
 }
+
+/* Global button clickability fix */
+button:not(:disabled),
+a[role="button"] {
+  cursor: pointer;
+}
+
+button:not(:disabled):active,
+a[role="button"]:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

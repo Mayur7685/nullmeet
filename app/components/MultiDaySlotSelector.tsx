@@ -166,7 +166,7 @@ export function MultiDaySlotSelector({
       <button
         onClick={() => onSubmit(slots)}
         disabled={disabled || slots.every((s) => s === 0)}
-        className="w-full mt-2 px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] disabled:opacity-40 rounded-lg text-white font-medium transition-colors"
+        className="w-full mt-2 px-6 py-3 bg-[var(--accent)] hover:bg-[var(--accent-light)] active:scale-95 disabled:opacity-40 disabled:active:scale-100 rounded-lg text-white font-medium transition-all"
       >
         Submit Availability ({numDays} day{numDays > 1 ? "s" : ""})
       </button>
