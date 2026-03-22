@@ -1,0 +1,13 @@
+# Anchor/Rust
+target/
+node_modules/
+.anchor/
+test-ledger/
+
+# env
+.env
+.env.local
+
+# misc
+.DS_Store
+npm-debug.log*

@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* Dark theme (default) */
+:root,
+[data-theme="dark"] {
+  --background: #0F172A;
+  --foreground: #E2E8F0;
+  --accent: #A855F7;
+  --accent-light: #C084FC;
+  --card: #1E293B;
+  --card-hover: #273548;
+  --border: #334155;
+  --muted: #94A3B8;
+  --muted-strong: #CBD5E1;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --slot-0-bg: #334155;
+  --slot-0-text: #94A3B8;
+  --slot-1-bg: #064E3B;
+  --slot-1-text: #6EE7B7;
+  --slot-2-bg: #065F46;
+  --slot-2-text: #A7F3D0;
+  --slot-3-bg: #10B981;
+  --slot-3-text: #ffffff;
+  --slot-4-bg: #34D399;
+  --slot-4-text: #000000;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --background: #E8E0F0;
+  --foreground: #1E293B;
+  --accent: #A855F7;
+  --accent-light: #9333EA;
+  --card: #DDD5E8;
+  --card-hover: #D0C5DE;
+  --border: #C4B5D4;
+  --muted: #64748B;
+  --muted-strong: #334155;
+  --success: #059669;
+  --warning: #D97706;
+  --error: #DC2626;
+  --slot-0-bg: #D0C5DE;
+  --slot-0-text: #64748B;
+  --slot-1-bg: #D1FAE5;
+  --slot-1-text: #065F46;
+  --slot-2-bg: #A7F3D0;
+  --slot-2-text: #064E3B;
+  --slot-3-bg: #10B981;
+  --slot-3-text: #ffffff;
+  --slot-4-bg: #059669;
+  --slot-4-text: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Override wallet adapter button styles to match theme */
+.wallet-adapter-button {
+  background-color: var(--accent) !important;
+  transition: all 0.15s ease !important;
+}
+
+.wallet-adapter-button:hover {
+  background-color: var(--accent-light) !important;
+}
+
+.wallet-adapter-button:active {
+  transform: scale(0.95) !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  background-color: var(--card) !important;
+}

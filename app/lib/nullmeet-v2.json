@@ -1,0 +1,953 @@
+{
+  "address": "ED2AyG4cew1sxP4RYiFm4xWvamY4VTJJ8yPSphfnVp2N",
+  "metadata": {
+    "name": "nullmeet_v2",
+    "version": "0.2.0",
+    "spec": "0.1.0",
+    "description": "Nullmeet v2 — Multi-day, group scheduling with TEE privacy"
+  },
+  "instructions": [
+    {
+      "name": "compute_result",
+      "docs": [
+        "Compute result — reads all participant SlotRecords via remaining_accounts",
+        "Called inside TEE once all parties have submitted",
+        "",
+        "remaining_accounts layout:",
+        "[0..N]   = SlotRecord accounts (one per participant)",
+        "[N..2N]  = Permission accounts for each SlotRecord"
+      ],
+      "discriminator": [
+        181,
+        250,
+        89,
+        68,
+        163,
+        147,
+        221,
+        129
+      ],
+      "accounts": [
+        {
+          "name": "meeting",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  101,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "permission_meeting",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "permission_program",
+          "address": "ACLseoPoyC3cBqoUtkbjZ4aDrkurZW86v19pXz2XQnp1"
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_meeting_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "create_meeting",
+      "docs": [
+        "Host creates a meeting and their own SlotRecord"
+      ],
+      "discriminator": [
+        19,
+        143,
+        66,
+        134,
+        88,
+        154,
+        203,
+        122
+      ],
+      "accounts": [
+        {
+          "name": "meeting",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  101,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "host_slot_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  108,
+                  111,
+                  116,
+                  95,
+                  114,
+                  101,
+                  99,
+                  111,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              },
+              {
+                "kind": "account",
+                "path": "host"
+              }
+            ]
+          }
+        },
+        {
+          "name": "host",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "meeting_id",
+          "type": "u64"
+        },
+        {
+          "name": "num_days",
+          "type": "u8"
+        },
+        {
+          "name": "start_date",
+          "type": "i64"
+        },
+        {
+          "name": "max_participants",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "create_permission",
+      "docs": [
+        "Creates a permission for a PDA based on AccountType"
+      ],
+      "discriminator": [
+        190,
+        182,
+        26,
+        164,
+        156,
+        221,
+        8,
+        0
+      ],
+      "accounts": [
+        {
+          "name": "permissioned_account"
+        },
+        {
+          "name": "permission",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "permission_program",
+          "address": "ACLseoPoyC3cBqoUtkbjZ4aDrkurZW86v19pXz2XQnp1"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_type",
+          "type": {
+            "defined": {
+              "name": "AccountType"
+            }
+          }
+        },
+        {
+          "name": "members",
+          "type": {
+            "option": {
+              "vec": {
+                "defined": {
+                  "name": "Member"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "delegate_pda",
+      "docs": [
+        "Generic PDA delegation — delegates any account type to TEE validator"
+      ],
+      "discriminator": [
+        248,
+        217,
+        193,
+        46,
+        124,
+        191,
+        64,
+        135
+      ],
+      "accounts": [
+        {
+          "name": "buffer_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pda"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                196,
+                60,
+                57,
+                141,
+                189,
+                128,
+                19,
+                244,
+                236,
+                20,
+                149,
+                13,
+                238,
+                28,
+                170,
+                162,
+                218,
+                46,
+                252,
+                204,
+                109,
+                14,
+                100,
+                168,
+                132,
+                211,
+                188,
+                142,
+                251,
+                122,
+                204,
+                91
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pda"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_pda",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pda"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "pda",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "validator",
+          "optional": true
+        },
+        {
+          "name": "owner_program",
+          "address": "ED2AyG4cew1sxP4RYiFm4xWvamY4VTJJ8yPSphfnVp2N"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_type",
+          "type": {
+            "defined": {
+              "name": "AccountType"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "join_meeting",
+      "docs": [
+        "Participant joins and creates their own SlotRecord"
+      ],
+      "discriminator": [
+        190,
+        189,
+        219,
+        19,
+        70,
+        124,
+        104,
+        159
+      ],
+      "accounts": [
+        {
+          "name": "meeting",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  101,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "participant_slot_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  108,
+                  111,
+                  116,
+                  95,
+                  114,
+                  101,
+                  99,
+                  111,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              },
+              {
+                "kind": "account",
+                "path": "participant"
+              }
+            ]
+          }
+        },
+        {
+          "name": "participant",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "meeting_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "lock_meeting",
+      "docs": [
+        "Host locks meeting — no more joins allowed, TEE delegation phase begins"
+      ],
+      "discriminator": [
+        94,
+        109,
+        123,
+        21,
+        56,
+        255,
+        140,
+        118
+      ],
+      "accounts": [
+        {
+          "name": "meeting",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  101,
+                  116,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "host",
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "_meeting_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer"
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "submit_slots",
+      "docs": [
+        "Submit slots — called inside TEE after delegation"
+      ],
+      "discriminator": [
+        235,
+        66,
+        236,
+        112,
+        179,
+        61,
+        154,
+        187
+      ],
+      "accounts": [
+        {
+          "name": "slot_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  108,
+                  111,
+                  116,
+                  95,
+                  114,
+                  101,
+                  99,
+                  111,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "meeting_id"
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "_meeting_id",
+          "type": "u64"
+        },
+        {
+          "name": "slots",
+          "type": "bytes"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Meeting",
+      "discriminator": [
+        85,
+        186,
+        152,
+        120,
+        141,
+        133,
+        75,
+        18
+      ]
+    },
+    {
+      "name": "SlotRecord",
+      "discriminator": [
+        228,
+        104,
+        192,
+        53,
+        105,
+        31,
+        49,
+        248
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "CannotJoinOwnMeeting",
+      "msg": "Cannot join your own meeting"
+    },
+    {
+      "code": 6001,
+      "name": "MeetingFull",
+      "msg": "Meeting is full"
+    },
+    {
+      "code": 6002,
+      "name": "AlreadySubmitted",
+      "msg": "Slots already submitted"
+    },
+    {
+      "code": 6003,
+      "name": "SlotsNotSubmitted",
+      "msg": "All participants must submit slots first"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidDayCount",
+      "msg": "Invalid day count (must be 1-7)"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidParticipantCount",
+      "msg": "Invalid participant count (must be 2-10)"
+    },
+    {
+      "code": 6006,
+      "name": "MeetingNotOpen",
+      "msg": "Meeting is not open for joining"
+    },
+    {
+      "code": 6007,
+      "name": "NotHost",
+      "msg": "Only the host can perform this action"
+    },
+    {
+      "code": 6008,
+      "name": "NotEnoughParticipants",
+      "msg": "Need at least 2 participants to lock"
+    },
+    {
+      "code": 6009,
+      "name": "AlreadyJoined",
+      "msg": "Already joined this meeting"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidSlotCount",
+      "msg": "Invalid slot count for the configured days"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidPreference",
+      "msg": "Preference score must be 0-4"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidAccountCount",
+      "msg": "Invalid number of remaining accounts"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidSlotRecord",
+      "msg": "Invalid slot record PDA"
+    }
+  ],
+  "types": [
+    {
+      "name": "AccountType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Meeting",
+            "fields": [
+              {
+                "name": "meeting_id",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "SlotRecord",
+            "fields": [
+              {
+                "name": "meeting_id",
+                "type": "u64"
+              },
+              {
+                "name": "owner",
+                "type": "pubkey"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Meeting",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "meeting_id",
+            "type": "u64"
+          },
+          {
+            "name": "host",
+            "type": "pubkey"
+          },
+          {
+            "name": "num_days",
+            "type": "u8"
+          },
+          {
+            "name": "start_date",
+            "type": "i64"
+          },
+          {
+            "name": "max_participants",
+            "type": "u8"
+          },
+          {
+            "name": "participant_count",
+            "type": "u8"
+          },
+          {
+            "name": "participants",
+            "type": {
+              "array": [
+                "pubkey",
+                10
+              ]
+            }
+          },
+          {
+            "name": "submitted_count",
+            "type": "u8"
+          },
+          {
+            "name": "result_day",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "result_slot",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "result_score",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "valid_overlap",
+            "type": "bool"
+          },
+          {
+            "name": "resolved",
+            "type": "bool"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MeetingStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MeetingStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Locked"
+          },
+          {
+            "name": "Computing"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Member",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "flags",
+            "type": "u8"
+          },
+          {
+            "name": "pubkey",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SlotRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "meeting_id",
+            "type": "u64"
+          },
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "num_days",
+            "type": "u8"
+          },
+          {
+            "name": "slots",
+            "type": {
+              "array": [
+                "u8",
+                56
+              ]
+            }
+          },
+          {
+            "name": "submitted",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ]
+}
